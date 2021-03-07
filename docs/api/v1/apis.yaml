@@ -1,10 +1,11 @@
 openapi: 3.0.1
 info:
-  version: 1.0.0
   title: 掲示板API
+  version: 1.0.0
 paths:
   /threads:
     get:
+      description: スレッド一覧
       parameters:
         -
           name: offset
@@ -44,50 +45,229 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Thread"
+                type: object
+                properties:
+                  threadsCount:
+                    type: integer
+                    description: スレッド数
+                  start:
+                    type: integer
+                    description: 開始位置
+                  count:
+                    type: integer
+                    description: ページ内のスレッド数
+                  threads:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Thread"
+        400:
+          $ref: "#/components/responses/IllegalInput"
+
+    post:
+      description: スレッド作成
+      requestBody:
+        content:
+          applicatoin/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                name:
+                  type: string
+                body:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - title
+                - name
+                - body
+      responses:
+        200:
+          description: 投稿成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Thread"
+        400:
+          $ref: "#/components/responses/IllegalInput"
+        403:
+          $ref: "#/components/responses/Forbidden"
+  /threads/{threadId}:
+    get:
+      parameters:
+        -
+          name: threadId
+          in: path
+          description: スレッドID
+          required: true
+          schema:
+            $ref: "#/components/schemas/ThreadId"
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  thread:
+                    $ref: "#/components/schemas/Thread"
+                  comments:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+                required:
+                  - thread
+        400:
+          $ref: "#/components/responses/IllegalInput"
+        404:
+          $ref: "#/components/responses/NotFound"
+  /threads/{threadId}/comments:
+    post:
+      description: コメント投稿
+      parameters:
+        -
+          name: threadId
+          in: path
+          description: スレッドID
+          required: true
+          schema:
+            $ref: "#/components/schemas/ThreadId"
+      requestBody:
+        content:
+          applicatoin/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                body:
+                  type: string
+                parentComment:
+                  description: 返信先のコメントID
+                  oneOf:
+                    - $ref: "#/components/schemas/CommentId"
+              required:
+                - name
+                - body
+      responses:
+        200:
+          description: 投稿成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        400:
+          $ref: "#/components/responses/IllegalInput"
+        403:
+          $ref: "#/components/responses/Forbidden"
+  /search:
+    get:
+      description: 検索
+      parameters:
+        -
+          name: query
+          in: query
+          description: 検索ワード
+          required: true
+          schema:
+            type: string
+        -
+          name: offset
+          in: query
+          description: 開始位置
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        -
+          name: limit
+          in: query
+          description: 表示件数
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resultsCount:
+                    type: integer
+                    description: 検索結果数
+                  start:
+                    type: integer
+                    description: 開始位置
+                  count:
+                    type: integer
+                    description: ページ内の結果数
+                  threads:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SearchResult"
+        400:
+          $ref: "#/components/responses/IllegalInput"
 components:
   schemas:
+    ThreadId:
+      description: スレッドID
+      type: string
+      format: uuid
+    CommentId:
+      description: コメントID
+      type: string
+      format: uuid
+    DateTime:
+      description: 作成、更新などの日時
+      type: string
+      format: date-time
     Thread:
       description: スレッド
       type: object
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: "#/components/schemas/ThreadId"
         title:
-          type: string
           description: スレッドのタイトル
-        body:
           type: string
-        authorId:
-          description: スレッド作成者
-          $ref: '#/components/schemas/User'
+        body:
+          description: スレッド内容
+          type: string
+        authorName:
+          description: スレッド作成者名
+          type: string
         tags:
           type: array
           items:
             $ref: '#/components/schemas/Tag'
-        latestCommentTime:
-          type: string
-          format: date-time
-          description: 最終コメント日時
         creationTime:
-          type: string
-          format: date-time
           description: 作成日時
-        updateTime:
-          type: string
-          format: date-tiem
-          description: 更新日時
-        updateVersion:
-          type: integer
-          description: 現在の更新バージョン
+          allOf:
+            - $ref: "#/components/schemas/DateTime"
+        latestCommentTime:
+          description: 最終コメント日時
+          allOf:
+            - $ref: "#/components/schemas/DateTime"
       required:
+        - id
         - title
         - body
+        - authorName
+        - creationTime
     Tag:
       description: スレッドのタグ
+      type: object
       properties:
         id:
           type: integer
@@ -95,12 +275,99 @@ components:
         text:
           type: string
       required:
+        - id
         - text
-    User:
-      description: ユーザー情報
+    Comment:
+      description: コメント
+      type: object
       properties:
         id:
+          $ref: "#/components/schemas/CommentId"
+        threadId:
+          description: コメントを書いたスレッドのID。
+          allOf:
+            - $ref: "#/components/schemas/ThreadId"
+        parentCommentId:
+          description: 親のコメントID。nullの場合はスレッドへのコメント。
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/CommentId"
+        body:
+          description: コメント内容
           type: string
-          format: uuid
-        name:
+        authorName:
+          description: コメント作成者
           type: string
+        creationTime:
+          description: 作成日時
+          allOf:
+            - $ref: "#/components/schemas/DateTime"
+      required:
+        - id
+        - threadId
+        - body
+        - authorName
+        - creationTime
+    SearchResult:
+      description: 検索結果
+      type: object
+      properties:
+        type:
+          description: 検索結果のタイプ
+          type: string
+          enum:
+            - thread
+            - comment
+        link:
+          description: アイテムへのリンク
+          type: object
+          properties:
+            threadId:
+              $ref: "#/components/schemas/ThreadId"
+            commentId:
+              $ref: "#/components/schemas/CommentId"
+          required:
+            - threadId
+  responses:
+    NotFound:
+      description: 見つからない
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+    Forbidden:
+      description: 禁止
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+    IllegalInput:
+      description: 入力エラー
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      description: エラーになったフィールド
+                      type: string
+                    message:
+                      description: エラー内容
+                      type: string
+                  required:
+                    - message
