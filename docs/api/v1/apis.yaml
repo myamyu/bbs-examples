@@ -318,16 +318,18 @@ components:
           enum:
             - thread
             - comment
-        link:
-          description: アイテムへのリンク
-          type: object
-          properties:
-            threadId:
-              $ref: "#/components/schemas/ThreadId"
-            commentId:
-              $ref: "#/components/schemas/CommentId"
-          required:
-            - threadId
+        thread:
+          description: hitしたスレッド
+          allOf:
+            - $ref: "#/components/schemas/Thread"
+        comment:
+          description: hitしたコメント
+          allOf:
+            - $ref: "#/components/schemas/Comment"
+      required:
+        - type
+        - link
+        - thread
   responses:
     NotFound:
       description: 見つからない
