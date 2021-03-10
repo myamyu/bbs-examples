@@ -23,14 +23,14 @@ create table if not exists bbs_comment (
 
 -- タグ
 create table if not exists bbs_tag (
-    tag_id serial,
-    tag_text varchar(100) not null,
+    tag_id      serial,
+    tag_text    varchar(100) not null,
     constraint tag_id primary key (tag_id)
 )
 
 -- タグ x スレッド
 create table if not exists bbs_thread_tag (
-    thread_id uuid not null,
-    tag_id int not null,
+    thread_id   uuid not null,
+    tag_id      int not null,
     constraint thread_tag_id primary key (thread_id, tag_id)
 )
