@@ -1,3 +1,8 @@
+use bbs;
+
+-- extensions
+create extension if not exists "uuid-ossp";
+
 -- スレッド
 create table if not exists bbs_thread (
     thread_id       uuid not null default uuid_generate_v1(),
