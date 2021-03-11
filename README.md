@@ -8,7 +8,6 @@
 
 ### must
 
-- DBのImageを作る（PostgreSQLかな）
 - 共通の確認用フロントエンド
 
 ### want
