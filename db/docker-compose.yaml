@@ -1,0 +1,12 @@
+version: "3"
+services:
+  bbs-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=bbs
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=bbs
+    ports:
+      - "127.0.0.1:5432:5432"
