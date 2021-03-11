@@ -1,5 +1,3 @@
-use bbs;
-
 -- extensions
 create extension if not exists "uuid-ossp";
 
