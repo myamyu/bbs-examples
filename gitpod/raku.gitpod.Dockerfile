@@ -1,8 +1,11 @@
 FROM gitpod/workspace-full
 
+USER root
+
+RUN apt-get install build-essential git libssl-dev
+
 USER gitpod
 
-RUN sudo apt-get install build-essential git libssl-dev
 RUN mkdir ~/rakudo && cd $_
 RUN curl -LJO https://rakudo.org/latest/star/src
 RUN tar -xzf rakudo-star-*.tar.gz
