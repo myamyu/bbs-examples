@@ -1,5 +1,5 @@
 image:
-  file: .gitpod.Dockerfile
+  file: ./gitpod/raku.gitpod.Dockerfile
 
 # List the ports you want to expose and what to do when they are served. See https://www.gitpod.io/docs/config-ports/
 ports:
@@ -14,3 +14,4 @@ tasks:
 vscode:
   extensions:
     - 42crunch.vscode-openapi@4.1.1:WzESBfxEbL8rR5B1Rm0KzQ==
+    - scriplit.perl6-lsp@0.3.0:azZxYGwLq3PfMmwd69eI9w==
