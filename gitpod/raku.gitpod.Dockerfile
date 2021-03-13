@@ -2,7 +2,9 @@ FROM gitpod/workspace-full
 
 USER root
 
-RUN apt update -y
-RUN apt install -y rakudo perl6-zef
-
 USER gitpod
+
+RUN git clone https://github.com/tadzik/rakudobrew ~/.rakudobrew
+RUN command ~/.rakudobrew/bin/rakudobrew internal_hooked "build" "moar"
+RUN command ~/.rakudobrew/bin/rakudobrew internal_hooked "global" "moar-2021.02.1"
+RUN command ~/.rakudobrew/bin/rakudobrew internal_hooked "build" "zef"
