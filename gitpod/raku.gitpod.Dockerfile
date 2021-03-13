@@ -10,5 +10,7 @@ RUN command ~/.rakudobrew/bin/rakudobrew internal_hooked "build" "moar"
 RUN command ~/.rakudobrew/bin/rakudobrew internal_hooked "global" "moar-2021.02.1"
 RUN command ~/.rakudobrew/bin/rakudobrew internal_hooked "build" "zef"
 
-ENV PATH /home/gitpod/.rakudobrew/bin:/home/gitpod/.rakudobrew/versions/moar-2021.02.1/install/share/perl6/site/bin:$PATH
+ENV PATH /home/gitpod/.rakudobrew/bin:$PATH
+ENV PATH /home/gitpod/.rakudobrew/versions/moar-2021.02.1/install/share/perl6/site/bin:$PATH
+ENV PATH /home/gitpod/.rakudobrew/versions/moar-2021.02.1/install/bin:$PATH
 RUN zef install --/test cro
