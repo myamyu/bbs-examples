@@ -1,2 +1,9 @@
+# Caches
+.precomp/
+node_modules/
+
+# Backup files
+*~
+
 auto/*
 !auto/.gitkeep

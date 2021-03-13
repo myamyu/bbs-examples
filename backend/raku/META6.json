@@ -1,0 +1,32 @@
+{
+  "test-depends": [
+  ],
+  "auth": "Write me!",
+  "tags": [
+    ""
+  ],
+  "support": {
+    "source": "Write me!"
+  },
+  "perl": "6.*",
+  "source-url": "Write me!",
+  "provides": {
+    "Routes.pm6": "lib/Routes.pm6"
+  },
+  "raku": null,
+  "version": "0.0.1",
+  "license": "Write me!",
+  "name": "bbs",
+  "description": "Write me!",
+  "meta-version": "0",
+  "resources": [
+  ],
+  "authors": [
+    ""
+  ],
+  "depends": [
+    "Cro::HTTP"
+  ],
+  "build-depends": [
+  ]
+}
