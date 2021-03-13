@@ -1,6 +1,6 @@
 ---
 cro: 1
-entrypoint: service.p6
+entrypoint: service.raku
 env:  []
 id: bbs
 endpoints: 

@@ -1,28 +1,28 @@
 {
   "test-depends": [
   ],
-  "auth": "Write me!",
+  "auth": "github:myamyu",
   "tags": [
     ""
   ],
   "support": {
-    "source": "Write me!"
+    "source": "https://github.com/myamyu/bbs-examples/tree/backend/raku"
   },
-  "perl": "6.*",
-  "source-url": "Write me!",
+  "perl": "6.d",
+  "source-url": "https://github.com/myamyu/bbs-examples/tree/backend/raku",
   "provides": {
-    "Routes.pm6": "lib/Routes.pm6"
+    "Routes.pm6": "lib/Routes.rakumod"
   },
   "raku": null,
-  "version": "0.0.1",
-  "license": "Write me!",
+  "version": "0.1.0",
+  "license": "MIT",
   "name": "bbs",
-  "description": "Write me!",
+  "description": "backend for BBS example.",
   "meta-version": "0",
   "resources": [
   ],
   "authors": [
-    ""
+    "myamyu"
   ],
   "depends": [
     "Cro::HTTP"
