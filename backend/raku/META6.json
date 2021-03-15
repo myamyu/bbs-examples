@@ -11,7 +11,8 @@
   "perl": "6.d",
   "source-url": "https://github.com/myamyu/bbs-examples/tree/backend/raku",
   "provides": {
-    "Routes.pm6": "lib/Routes.rakumod"
+    "Routes": "lib/Routes.rakumod",
+    "BBS": "lib/BBS.rakumod"
   },
   "raku": null,
   "version": "0.1.0",
