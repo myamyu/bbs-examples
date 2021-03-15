@@ -1,5 +1,3 @@
-=head2 BBS::Model::Article
-
 unit role BBS::Model::Article;
 
 has Str $.body is required;
