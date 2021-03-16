@@ -1,4 +1,6 @@
-unit role BBS::Model::Article;
+use BBS::Model::Base;
+
+unit role BBS::Model::Article does BBS::Model::Base;
 
 has Str $.body is required;
 has Str $.author_name is required;

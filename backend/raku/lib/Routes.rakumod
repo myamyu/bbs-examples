@@ -18,22 +18,19 @@ sub routes(BBS::Repository::BBSRepository $repo) is export {
                 limit => 5,
                 sort => "update_desc",
             );
-            my %res = (
-                threadsCount => $threads.threads_count,
-                start => $threads.start,
-                count => $threads.count,
-                threads => $threads.threads,
-            );
-            content "application/json", %res;
+            content "application/json", $threads.to_hash;
         }
 
         # post /threads
         post -> "threads" {
             request-body "application/json" => -> %req {
-                my %res = (
-                    message => "ok",
+                my $thread = $service.createThread(
+                    title => %req<title>,
+                    body => %req<body>,
+                    author_name => %req<name>,
+                    tags => %req<tags>,
                 );
-                content "application/json", %res;
+                content "application/json", $thread;
             }
         }
     }

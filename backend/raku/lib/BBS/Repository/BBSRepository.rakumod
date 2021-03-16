@@ -15,7 +15,7 @@ method createThread(
     Str :$title,
     Str :$body,
     Str :$author_name,
-    Str[] :@tags = [],
+    :@tags where Array = [],
     --> BBS::Model::Thread
 ) {...}
 
