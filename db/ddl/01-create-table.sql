@@ -8,6 +8,7 @@ create table if not exists bbs_thread (
     body            text not null,
     author_name     varchar(100) not null,
     creation_time   timestamp not null default current_timestamp,
+    update_time   timestamp not null default current_timestamp,
     delete_time     timestamp,
     constraint thread_id primary key (thread_id)
 );

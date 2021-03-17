@@ -57,12 +57,15 @@ method createThread(
     $uuid ~~ s:global/x/{"0123456789abcdef".comb[Int(16.rand)]}/;
     $uuid ~~ s:global/y/{"89AB".comb[Int(4.rand)]}/;
 
+    my $now = DateTime.now;
     my $thread = BBS::Model::Thread.new(
         thread_id => $uuid,
         title => $title,
         body => $body,
         author_name => $author_name,
         tags => @tags,
+        creation_time => $now,
+        update_time => $now,
     );
 
     @!threads.push($thread);
@@ -74,13 +77,7 @@ method getThread(
     Str :$thread_id,
     --> BBS::Model::Thread
 ) {
-    return BBS::Model::Thread.new(
-        thread_id => "1ba333cf-78fe-4d84-aa9c-cfb0876e2516",
-        title => "title",
-        body => "body",
-        author_name => "author_name",
-        tags => ["たぐ", "たぐ２"],
-    );
+    return @!threads.first: -> $t {$t.thread_id === $thread_id};
 }
 
 method addComment(

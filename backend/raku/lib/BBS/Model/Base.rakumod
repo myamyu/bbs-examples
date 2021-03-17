@@ -1,8 +1,8 @@
-unit role BBS::Model::Base does Associative;
+unit role BBS::Model::Base does Associative[Any, Str];
 
-method to_hash() {...}
+method hash() {...}
 
 method list() {
-    my %h = self!to_hash();
+    my %h = self.hash;
     return %h.list;
 }

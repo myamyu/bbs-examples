@@ -7,7 +7,7 @@ has Str $.title is required;
 has Str @.tags;
 has DateTime $.update_time;
 
-method to_hash() {
+method hash() {
     return (
         id => $.thread_id,
         title => $.title,
@@ -15,5 +15,6 @@ method to_hash() {
         authorName => $.author_name,
         tags => $.tags,
         creationTime => $.creation_time,
+        updateTime => $.update_time,
     );
 }

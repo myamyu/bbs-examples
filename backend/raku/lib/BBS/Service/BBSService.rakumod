@@ -1,6 +1,7 @@
 use BBS::Model::Thread;
 use BBS::Model::ThreadList;
 use BBS::Repository::BBSRepository;
+use BBS;
 
 unit class BBS::Service::BBSService;
 
@@ -34,4 +35,18 @@ method createThread(
         author_name => $author_name,
         tags => @tags,
     );
+}
+
+method getThread(
+    Str :$thread_id,
+    --> BBS::Model::Thread
+) {
+    my \thread = self.repository.getThread(
+        thread_id => $thread_id,
+    );
+
+    unless thread.defined {
+        die BBS::Error::NotFound.new;
+    }
+    return thread;
 }

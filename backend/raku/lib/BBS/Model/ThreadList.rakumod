@@ -8,11 +8,11 @@ has Int $.start;
 has Int $.count;
 has BBS::Model::Thread @.threads;
 
-method to_hash() {
+method hash() {
     return (
         start => $.start,
         count => $.count,
         threadsCount => $.threads_count,
-        threads => $.threads,
+        threads => @.threads,
     );
 }
