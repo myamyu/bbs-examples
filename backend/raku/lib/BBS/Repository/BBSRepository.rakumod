@@ -28,11 +28,11 @@ method addComment(
     Str :$thread_id,
     Str :$body,
     Str :$author_name,
-    Int :$parent_comment_id,
+    :$parent_comment_id,
     --> BBS::Model::Comment
 ) {...}
 
 method getThreadComments(
     Str :$thread_id,
-    --> BBS::Model::Comment[]
+    --> Array
 ) {...}

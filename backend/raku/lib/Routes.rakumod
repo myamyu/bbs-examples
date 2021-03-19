@@ -1,10 +1,9 @@
 use Cro::HTTP::Router;
 use BBS::Repository::BBSRepository;
-use BBS::Service::BBSService;
 use BBS;
 
 sub routes(BBS::Repository::BBSRepository $repo) is export {
-    my $service = BBS::Service::BBSService.new(
+    my $service = BBS::BBSService.new(
         repository => $repo,
     );
     route {
@@ -32,6 +31,11 @@ sub routes(BBS::Repository::BBSRepository $repo) is export {
                     tags => %req<tags>,
                 );
                 content "application/json", %thread;
+                CATCH {
+                    when BBS::Error::Invalid {
+                        bad-request;
+                    }
+                }
             }
         }
 
@@ -40,14 +44,39 @@ sub routes(BBS::Repository::BBSRepository $repo) is export {
             my %thread = $service.getThread(
                 thread_id => $thread_id,
             );
+            my @comments = $service.getThreadComments(
+                thread_id => $thread_id,
+            );
+
             my %res = (
                 thread => %thread,
-                comments => [],
+                comments => @comments,
             );
             content "application/json", %res;
             CATCH {
                 when BBS::Error::NotFound {
                     not-found;
+                }
+            }
+        }
+
+        # /threads/{threadId}/comments
+        post -> "threads", $thread_id, "comments" {
+            request-body "application/json" => -> %req {
+                my %comment = $service.addComment(
+                    thread_id => $thread_id,
+                    body => %req<body>,
+                    author_name => %req<name>,
+                    parent_comment_id => %req<parentComment>,
+                );
+                content "application/json", %comment;
+                CATCH {
+                    when BBS::Error::NotFound {
+                        not-found;
+                    }
+                    when BBS::Error::Invalid {
+                        bad-request;
+                    }
                 }
             }
         }

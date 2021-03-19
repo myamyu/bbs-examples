@@ -84,21 +84,32 @@ method addComment(
     Str :$thread_id,
     Str :$body,
     Str :$author_name,
-    Int :$parent_comment_id,
+    :$parent_comment_id,
     --> BBS::Model::Comment
 ) {
-    return BBS::Model::Comment.new(
-        comment_id => 1,
+    my $nextId = 1;
+    my @cs = @!comments.grep: -> $c {$c.thread_id === $thread_id};
+    if @cs.elems > 0 {
+        my $latest = @cs.sort({$^b.creation_time cmp $^a.creation_time})[0];
+        $nextId = $latest.comment_id + 1;
+    }
+
+    my $comment = BBS::Model::Comment.new(
+        comment_id => $nextId,
         thread_id => $thread_id,
         body => $body,
         author_name => $author_name,
         parent_comment_id => $parent_comment_id,
-    )
+    );
+
+    @!comments.push($comment);
+    return $comment;
 }
 
 method getThreadComments(
     Str :$thread_id,
-    --> BBS::Model::Comment[]
+    --> Array
 ) {
-    return [];
+    my @cs = @!comments.grep: -> $c {$c.thread_id === $thread_id};
+    return @cs;
 }
