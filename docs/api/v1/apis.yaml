@@ -255,8 +255,8 @@ components:
           description: 作成日時
           allOf:
             - $ref: "#/components/schemas/DateTime"
-        latestCommentTime:
-          description: 最終コメント日時
+        updateTime:
+          description: 更新日時
           allOf:
             - $ref: "#/components/schemas/DateTime"
       required:

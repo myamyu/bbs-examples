@@ -1,0 +1,32 @@
+{
+  "test-depends": [
+  ],
+  "auth": "github:myamyu",
+  "tags": [
+    ""
+  ],
+  "support": {
+    "source": "https://github.com/myamyu/bbs-examples/tree/backend/raku"
+  },
+  "perl": "6.d",
+  "source-url": "https://github.com/myamyu/bbs-examples/tree/backend/raku",
+  "provides": {
+    "Routes": "lib/Routes.rakumod"
+  },
+  "raku": null,
+  "version": "0.1.0",
+  "license": "MIT",
+  "name": "bbs",
+  "description": "backend for BBS example.",
+  "meta-version": "0",
+  "resources": [
+  ],
+  "authors": [
+    "myamyu"
+  ],
+  "depends": [
+    "Cro::HTTP"
+  ],
+  "build-depends": [
+  ]
+}

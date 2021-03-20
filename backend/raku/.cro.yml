@@ -1,0 +1,15 @@
+---
+cro: 1
+entrypoint: service.raku
+env:  []
+id: bbs
+endpoints: 
+  - 
+    port-env: BBS_PORT
+    id: http
+    name: HTTP
+    protocol: http
+    host-env: BBS_HOST
+name: bbs
+links:  []
+...

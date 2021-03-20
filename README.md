@@ -4,6 +4,15 @@
 
 仕様については [docs/README.md](./docs/README.md)。
 
+## ディレクトリ
+
+- [backend/](./backend/)  
+  APIの実装。各言語ごとにディレクトリを作る。
+- [db/](./db/)
+  DatabaseのimageとDDL。
+- [frontend/](./frontend/)  
+  フロントの実装
+
 ## 今後やりたいこと
 
 ### must
