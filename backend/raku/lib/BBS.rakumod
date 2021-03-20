@@ -6,7 +6,9 @@ use BBS::Repository::BBSRepository;
 class BBS::Error::NotFound is Exception {}
 
 # validationエラー
-class BBS::Error::Invalid is Exception {}
+class BBS::Error::Invalid is Exception {
+    has @.errors = [];
+}
 
 class BBS::BBSService {
     has BBS::Repository::BBSRepository $.repository;
@@ -31,7 +33,31 @@ class BBS::BBSService {
         :@tags where Array = [],
         --> BBS::Model::Thread
     ) {
-        # TODO バリデーション
+        # バリデーション
+        my @invalid = [];
+        if not $title.defined or $title eq "" {
+            @invalid.push(%(
+                field => "title",
+                message => "タイトルが指定されていません",
+            ));
+        }
+
+        if not $body.defined or $body eq "" {
+            @invalid.push(%(
+                field => "body",
+                message => "内容が指定されていません",
+            ));
+        }
+
+        if not $author_name.defined or $author_name eq "" {
+            @invalid.push(%(
+                field => "name",
+                message => "名前が指定されていません",
+            ));
+        }
+
+        # 入力エラーがあったらInvalidを発火
+        die BBS::Error::Invalid.new(errors => @invalid) if @invalid.elems > 0;
 
         return self.repository.createThread(
             title => $title,
@@ -49,9 +75,7 @@ class BBS::BBSService {
             thread_id => $thread_id,
         );
 
-        unless thread.defined {
-            die BBS::Error::NotFound.new;
-        }
+        die BBS::Error::NotFound.new unless thread.defined;
         return thread;
     }
 
@@ -67,7 +91,24 @@ class BBS::BBSService {
             thread_id => $thread_id
         );
 
-        # TODO バリデーション
+        # バリデーション
+        my @invalid = [];
+        if not $body.defined or $body eq "" {
+            @invalid.push(%(
+                field => "body",
+                message => "内容が指定されていません",
+            ));
+        }
+
+        if not $author_name.defined or $author_name eq "" {
+            @invalid.push(%(
+                field => "name",
+                message => "名前が指定されていません",
+            ));
+        }
+
+        # 入力エラーがあったらInvalidを発火
+        die BBS::Error::Invalid.new(errors => @invalid) if @invalid.elems > 0;
 
         my $comment = self.repository.addComment(
             thread_id => $thread.thread_id,

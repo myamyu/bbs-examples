@@ -16,7 +16,7 @@ sub routes(BBS::Repository::BBSRepository $repo) is export {
             my %threads = $service.getThreads(
                 offset => $offset.defined ?? Int($offset) !! 0,
                 limit => $limit.defined ?? Int($limit) !! 10,
-                sort => $sort.defined ?? $sort !! "update_desc",
+                sort => $sort || "update_desc",
             );
             content "application/json", %threads;
         }
@@ -33,7 +33,8 @@ sub routes(BBS::Repository::BBSRepository $repo) is export {
                 content "application/json", %thread;
                 CATCH {
                     when BBS::Error::Invalid {
-                        bad-request;
+                        my @err = .errors;
+                        bad-request "application/json", @err;
                     }
                 }
             }
@@ -55,7 +56,10 @@ sub routes(BBS::Repository::BBSRepository $repo) is export {
             content "application/json", %res;
             CATCH {
                 when BBS::Error::NotFound {
-                    not-found;
+                    my %err = (
+                        message => "スレッド $thread_id が見つかりません",
+                    );
+                    not-found "application/json", %err;
                 }
             }
         }
@@ -72,10 +76,14 @@ sub routes(BBS::Repository::BBSRepository $repo) is export {
                 content "application/json", %comment;
                 CATCH {
                     when BBS::Error::NotFound {
-                        not-found;
+                        my %err = (
+                            message => "スレッド $thread_id が見つかりません",
+                        );
+                        not-found "application/json", %err;
                     }
                     when BBS::Error::Invalid {
-                        bad-request;
+                        my @err = .errors;
+                        bad-request "application/json", @err;
                     }
                 }
             }

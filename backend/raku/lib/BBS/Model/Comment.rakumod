@@ -8,6 +8,11 @@ has $.parent_comment_id;
 
 method hash() {
     return (
+        id => $.comment_id,
+        threadId => $.thread_id,
         body => $.body,
+        authorName => $.author_name,
+        creationTime => $.creation_time,
+        parentCommentId => $.parent_comment_id,
     );
 }

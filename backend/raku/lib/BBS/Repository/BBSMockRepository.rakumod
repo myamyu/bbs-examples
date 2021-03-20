@@ -55,7 +55,7 @@ method createThread(
 ) {
     my $uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
     $uuid ~~ s:global/x/{"0123456789abcdef".comb[Int(16.rand)]}/;
-    $uuid ~~ s:global/y/{"89AB".comb[Int(4.rand)]}/;
+    $uuid ~~ s:global/y/{"89ab".comb[Int(4.rand)]}/;
 
     my $now = DateTime.now;
     my $thread = BBS::Model::Thread.new(
@@ -94,12 +94,14 @@ method addComment(
         $nextId = $latest.comment_id + 1;
     }
 
+    my $now = DateTime.now;
     my $comment = BBS::Model::Comment.new(
         comment_id => $nextId,
         thread_id => $thread_id,
         body => $body,
         author_name => $author_name,
         parent_comment_id => $parent_comment_id,
+        creation_time => $now,
     );
 
     @!comments.push($comment);
