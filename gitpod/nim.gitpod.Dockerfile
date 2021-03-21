@@ -9,4 +9,4 @@ USER gitpod
 SHELL ["/bin/bash", "-c"]
 
 RUN curl https://nim-lang.org/choosenim/init.sh -sSf | bash -s -- -y
-ENV PATH=/gitpod/.nimble/bin:$PATH
+ENV PATH=/home/gitpod/.nimble/bin:$PATH
