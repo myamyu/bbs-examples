@@ -5,6 +5,7 @@ author        = "myammyu"
 description   = "BBS backend"
 license       = "MIT"
 srcDir        = "src"
+binDir        = "bin"
 bin           = @["service"]
 
 
