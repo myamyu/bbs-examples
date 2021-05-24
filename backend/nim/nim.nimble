@@ -12,3 +12,4 @@ bin           = @["service"]
 # Dependencies
 
 requires "nim >= 1.4.4"
+requires "jester >= 0.5.0"
