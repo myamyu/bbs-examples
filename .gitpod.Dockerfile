@@ -15,7 +15,7 @@ ENV PATH=/home/gitpod/.nimble/bin:$PATH
 # raku
 ENV MOARVER 2021.05
 RUN git clone https://github.com/tadzik/rakudobrew ~/.rakudobrew \
-    && command ~/.rakudobrew/bin/rakudobrew internal_hooked "build" "moar-${MOARVER}" \
+    && command ~/.rakudobrew/bin/rakudobrew internal_hooked "build" "moar" "${MOARVER}" \
     && command ~/.rakudobrew/bin/rakudobrew internal_hooked "global" "moar-${MOARVER}" \
     && command ~/.rakudobrew/bin/rakudobrew internal_hooked "build" "zef"
 ENV PATH /home/gitpod/.rakudobrew/bin:$PATH
