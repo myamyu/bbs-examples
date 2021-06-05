@@ -1,18 +1,27 @@
 import times
 
 type
-  Article* = ref object of RootObj
+  Article* = object
     body:string
     authorName:string
     creationTime:DateTime
-    deleteTime:DateTime
-  Comment* = ref object of RootObj
+    deleteTime:ref DateTime
+  Comment* = object
     threadId:string
     commentId:int
-    parentCommentId:int
-  Thread* = ref object of RootObj
+    parentCommentId:ref int
+  Thread* = object
     threadId:string
     title:string
     tags:seq[string]
     updateTime:DateTime
+  ThreadList* = object
+    threadsCount:int
+    start:int
+    count:int
+    threads:seq[Thread]
 
+#[
+  Articleが削除されているか？
+]#
+proc isDelete*(a:Article):bool = a.deleteTime != nil
