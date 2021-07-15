@@ -1,3 +1,4 @@
+
 image:
   file: ./.gitpod.Dockerfile
 
@@ -13,6 +14,4 @@ tasks:
 
 vscode:
   extensions:
-    - 42crunch.vscode-openapi@4.1.1:WzESBfxEbL8rR5B1Rm0KzQ==
-    - scriplit.perl6-lsp@0.3.0:azZxYGwLq3PfMmwd69eI9w==
-    - nimsaem.nimvscode@0.1.19:YEpE0uDmgxQKCJQ6aLH4AQ==
+    - nimsaem.nimvscode

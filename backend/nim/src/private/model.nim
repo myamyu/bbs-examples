@@ -2,24 +2,24 @@ import times
 
 type
   Article* = object
-    body:string
-    authorName:string
-    creationTime:DateTime
-    deleteTime:ref DateTime
+    body*:string
+    authorName*:string
+    creationTime*:DateTime
+    deleteTime*:ref DateTime
   Comment* = object
-    threadId:string
-    commentId:int
-    parentCommentId:ref int
+    threadId*:string
+    commentId*:int
+    parentCommentId*:ref int
   Thread* = object
-    threadId:string
-    title:string
-    tags:seq[string]
-    updateTime:DateTime
+    threadId*:string
+    title*:string
+    tags*:seq[string]
+    updateTime*:DateTime
   ThreadList* = object
-    threadsCount:int
-    start:int
-    count:int
-    threads:seq[Thread]
+    threadsCount*:int
+    start*:int
+    count*:int
+    threads*:seq[Thread]
 
 #[
   Articleが削除されているか？

@@ -1,4 +1,10 @@
 import jester, json
+import ./private/model
+import ./private/repository
+import ./private/service
+
+let repo = newMockBBSRepository()
+let sv = newBBSService(repo.toInterface())
 
 routes:
   get "/":
@@ -6,9 +12,16 @@ routes:
 
   # スレッド一覧
   get "/threads":
+    # TODO queryStringから値を取る
+    let 
+      offset = 0
+      limit = 10
+      sort = "creation_desc"
+
+    let list = sv.getThreads(offset, limit, sort)
     resp %*{
-      "threadsCount": 0,
-      "count": 0,
+      "threadsCount": list.threadsCount,
+      "count": list.count,
       "threads": [],
     }
 
@@ -37,3 +50,5 @@ routes:
     resp Http404, $(%*{
       "message": "見つからないよ",
     }), "application/json"
+
+runForever()
