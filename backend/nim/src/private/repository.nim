@@ -8,17 +8,14 @@ type
     getThread: proc(threadId:string):Thread
     addComment: proc(threadId:string, body:string, authorName:string, parentCommendId:ref int):Comment
     getThreadComments: proc(threadId:string):seq[Comment]
+  # Mock版のリポジトリ
   MockBBSRepository* = ref object
-    threads: seq[Thread]
-    comments: seq[Comment]
 
 #[
   モック版のリポジトリを作成
 ]#
 proc newMockBBSRepository*():MockBBSRepository =
-  return MockBBSRepository(
-    threads:newSeq[Thread](),
-    comments:newSeq[Comment]())
+  return MockBBSRepository()
 
 proc getThreads(self:MockBBSRepository, 
     offset:int, limit:int, sort:string):ThreadList =

@@ -1,5 +1,6 @@
 import ./model
 import ./repository
+import ./dicon
 
 type
   BBSService* = ref object
@@ -8,8 +9,8 @@ type
 #[
   BBSServiceを作成
 ]#
-proc newBBSService*(repo:IBBSRepository):BBSService =
-  return BBSService(repo:repo)
+proc newBBSService*():BBSService =
+  return BBSService(repo:di.bbsRepository)
 
 #[
   Threadの一覧を取得

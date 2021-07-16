@@ -1,10 +1,9 @@
 import jester, json
 import ./private/model
-import ./private/repository
 import ./private/service
 
-let repo = newMockBBSRepository()
-let sv = newBBSService(repo.toInterface())
+var
+  sv = newBBSService()
 
 routes:
   get "/":
@@ -17,8 +16,8 @@ routes:
       offset = 0
       limit = 10
       sort = "creation_desc"
-
-    let list = sv.getThreads(offset, limit, sort)
+    {.gcsafe.}:
+      let list = sv.getThreads(offset, limit, sort)
     resp %*{
       "threadsCount": list.threadsCount,
       "count": list.count,
@@ -29,7 +28,7 @@ routes:
   post "/threads":
     let reqBody = parseJson(request.body())
     echo reqBody
-    resp Http400, $(%*{
+    resp Http503, $(%*{
       "error": [
         {"field": "none", "message": "まだできてません"},
       ],
