@@ -1,4 +1,4 @@
-import uuids
+import uuids, times
 import ./model
 
 type
@@ -21,9 +21,9 @@ proc newMockBBSRepository*():MockBBSRepository =
 proc getThreads(self:MockBBSRepository, 
     offset:int, limit:int, sort:string):ThreadList =
   result = ThreadList(
-    threadsCount: 10,
+    threadsCount: 3,
     start: offset,
-    count: limit,
+    count: 3,
     threads: @[
       Thread(
         threadId: $(genUUID()),
@@ -31,6 +31,26 @@ proc getThreads(self:MockBBSRepository,
         body: "ぼでー",
         authorName: "ふが次郎",
         tags: @["たぐ"],
+        creationTime: now(),
+        updateTime: now(),
+      ),
+      Thread(
+        threadId: $(genUUID()),
+        title: "たいとる2",
+        body: "ぼでー2",
+        authorName: "ふが次郎2",
+        tags: @["たぐ", "たぐ2"],
+        creationTime: now(),
+        updateTime: now(),
+      ),
+      Thread(
+        threadId: $(genUUID()),
+        title: "たいとる3",
+        body: "ぼでー3",
+        authorName: "ふが次郎3",
+        tags: @["たぐaaaa"],
+        creationTime: now(),
+        updateTime: now(),
       ),
     ]
   )
@@ -53,6 +73,7 @@ proc getThread(self:MockBBSRepository,
     body: "スレッドの内容だよ",
     authorName: "ほげ太郎",
     tags: @["たぐ", "たぐ２"],
+    creationTime: now(),
   )
 
 proc addComment(self:MockBBSRepository, 
