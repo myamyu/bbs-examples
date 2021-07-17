@@ -1,16 +1,16 @@
 import times
 
 type
-  Article* = object
+  Article* = ref object of RootObj
     body*:string
     authorName*:string
     creationTime*:DateTime
     deleteTime*:ref DateTime
-  Comment* = object
+  Comment* = ref object of Article
     threadId*:string
     commentId*:int
     parentCommentId*:ref int
-  Thread* = object
+  Thread* = ref object of Article
     threadId*:string
     title*:string
     tags*:seq[string]

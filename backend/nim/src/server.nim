@@ -1,4 +1,5 @@
 import jester, json
+import marshal
 import ./private/model
 import ./private/service
 
@@ -21,7 +22,7 @@ routes:
     resp %*{
       "threadsCount": list.threadsCount,
       "count": list.count,
-      "threads": [],
+      "threads": $$list.threads,
     }
 
   # スレッド新規作成

@@ -13,3 +13,4 @@ bin           = @["server"]
 
 requires "nim >= 1.4.4"
 requires "jester >= 0.5.0"
+requires "uuids >= 0.1.11"
