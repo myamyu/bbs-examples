@@ -10,7 +10,7 @@ type
   Comment* = ref object of Article
     threadId*:string
     commentId*:int
-    parentCommentId*:ref int
+    parentCommentId*:int
   Thread* = ref object of Article
     threadId*:string
     title*:string
@@ -29,6 +29,7 @@ proc isDelete*(a:Article):bool = not a.deleteTime.isInitialized
 
 proc `%`*(dt:BBSDateTime):JsonNode =
   if dt.isInitialized:
-    result = %dt.format("yyyy-MM-dd HH:mm:ss")
+    let strDt = $dt
+    result = %strDt
   else:
     result = %*nil

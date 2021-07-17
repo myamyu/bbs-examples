@@ -37,10 +37,15 @@ routes:
   # スレッド取得
   get "/threads/@threadId":
     let threadId = @"threadId"
-    echo threadId
-    resp Http404, $(%*{
-      "message": "見つからないよ",
-    }), "application/json"
+    {.gcsafe.}:
+      # TODO threadがなかったら404
+      let
+        thread = sv.getThread(threadId)
+        comments = sv.getThreadComments(threadId)
+    resp %*{
+      "thread": thread,
+      "comments": comments,
+    }
 
   # コメント投稿
   post "/threads/@threadId/comments":

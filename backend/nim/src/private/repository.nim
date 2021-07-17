@@ -7,7 +7,7 @@ type
     getThreads: proc(offset:int, limit:int, sort:string):ThreadList
     createThread: proc(title:string, body:string, authorName:string, tags:seq[string]):Thread
     getThread: proc(threadId:string):Thread
-    addComment: proc(threadId:string, body:string, authorName:string, parentCommendId:ref int):Comment
+    addComment: proc(threadId:string, body:string, authorName:string, parentCommendId:int):Comment
     getThreadComments: proc(threadId:string):seq[Comment]
   # Mock版のリポジトリ
   MockBBSRepository* = ref object
@@ -80,9 +80,10 @@ proc getThread(self:MockBBSRepository,
   )
 
 proc addComment(self:MockBBSRepository, 
-    threadId:string, body:string, authorName:string, parentCommendId:ref int):Comment =
-  return Comment(
+    threadId:string, body:string, authorName:string, parentCommendId:int):Comment =
+  result = Comment(
     threadId: threadId,
+    commentId: parentCommendId + 1,
     body: body,
     authorName: authorName,
     parentCommentId: parentCommendId,
@@ -91,7 +92,32 @@ proc addComment(self:MockBBSRepository,
 
 proc getThreadComments(self:MockBBSRepository, 
     threadId:string):seq[Comment] =
-  return newSeq[Comment]()
+  result = @[
+    Comment(
+      threadId: threadId,
+      commentId: 1,
+      body: "コメント1",
+      authorName: "米の助",
+      parentCommentId: 0,
+      creationTime: now(),
+    ),
+    Comment(
+      threadId: threadId,
+      commentId: 2,
+      body: "コメント2",
+      authorName: "米の助",
+      parentCommentId: 0,
+      creationTime: now(),
+    ),
+    Comment(
+      threadId: threadId,
+      commentId: 3,
+      body: "コメント3",
+      authorName: "米の助",
+      parentCommentId: 1,
+      creationTime: now(),
+    ),
+  ]
 
 proc toInterface*(self:MockBBSRepository):IBBSRepository =
   return (
@@ -101,7 +127,7 @@ proc toInterface*(self:MockBBSRepository):IBBSRepository =
       self.createThread(title, body, authorName, tags),
     getThread: proc(threadId:string):Thread =
       self.getThread(threadId),
-    addComment: proc(threadId:string, body:string, authorName:string, parentCommendId:ref int):Comment =
+    addComment: proc(threadId:string, body:string, authorName:string, parentCommendId:int):Comment =
       self.addComment(threadId, body, authorName, parentCommendId),
     getThreadComments: proc(threadId:string):seq[Comment] =
       self.getThreadComments(threadId),

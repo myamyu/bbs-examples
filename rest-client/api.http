@@ -19,3 +19,6 @@ Content-Type: application/json
 
 ###
 
+GET {{origin}}/threads/ffec561a-076b-4134-ae65-065eeabaa86c
+
+###
