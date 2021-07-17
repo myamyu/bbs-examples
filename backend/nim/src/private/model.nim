@@ -6,7 +6,7 @@ type
     body*:string
     authorName*:string
     creationTime*:BBSDateTime
-    deleteTime*:ref BBSDateTime
+    deleteTime*:BBSDateTime
   Comment* = ref object of Article
     threadId*:string
     commentId*:int
@@ -25,7 +25,10 @@ type
 #[
   Articleが削除されているか？
 ]#
-proc isDelete*(a:Article):bool = a.deleteTime != nil
+proc isDelete*(a:Article):bool = not a.deleteTime.isInitialized
 
 proc `%`*(dt:BBSDateTime):JsonNode =
-  result = %dt.format("yyyy-MM-dd HH:mm:ss")
+  if dt.isInitialized:
+    result = %dt.format("yyyy-MM-dd HH:mm:ss")
+  else:
+    result = %*nil
