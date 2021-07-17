@@ -63,6 +63,8 @@ proc createThread(self:MockBBSRepository,
     body: body,
     authorName: authorName,
     tags: tags,
+    creationTime: now(),
+    updateTime: now(),
   )
 
 proc getThread(self:MockBBSRepository, 
@@ -74,11 +76,18 @@ proc getThread(self:MockBBSRepository,
     authorName: "ほげ太郎",
     tags: @["たぐ", "たぐ２"],
     creationTime: now(),
+    updateTime: now(),
   )
 
 proc addComment(self:MockBBSRepository, 
     threadId:string, body:string, authorName:string, parentCommendId:ref int):Comment =
-  return Comment()
+  return Comment(
+    threadId: threadId,
+    body: body,
+    authorName: authorName,
+    parentCommentId: parentCommendId,
+    creationTime: now(),
+  )
 
 proc getThreadComments(self:MockBBSRepository, 
     threadId:string):seq[Comment] =
