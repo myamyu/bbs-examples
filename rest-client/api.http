@@ -1,0 +1,33 @@
+@origin = http://localhost:5000
+
+GET {{origin}}/threads?offset=0&limit=10&sort=update_desc
+
+###
+
+POST {{origin}}/threads
+Content-Type: application/json
+
+{
+  "title": "ほげほげ",
+  "name": "ほげ太郎",
+  "body": "むかしむかしあるところにいました。",
+  "tags": [
+    "たぐ1",
+    "たぐ2"
+  ]
+}
+
+###
+
+GET {{origin}}/threads/ffec561a-076b-4134-ae65-065eeabaa86c
+
+###
+
+POST {{origin}}/threads/ffec561a-076b-4134-ae65-065eeabaa86c/comments
+Content-Type: application/json
+
+{
+  "name": "ほげ三郎",
+  "body": "むかしむかしあるところにいました。",
+  "parentComment": 2
+}
