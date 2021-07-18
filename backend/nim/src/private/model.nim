@@ -27,6 +27,9 @@ type
 ]#
 proc isDelete*(a:Article):bool = not a.deleteTime.isInitialized
 
+#[
+  日時をJSON型に
+]#
 proc `%`*(dt:BBSDateTime):JsonNode =
   if dt.isInitialized:
     let strDt = $dt

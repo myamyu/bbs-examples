@@ -1,4 +1,4 @@
-import jester, json
+import jester, json, strutils
 import ./private/model
 import ./private/service
 
@@ -11,11 +11,12 @@ routes:
 
   # スレッド一覧
   get "/threads":
-    # TODO queryStringから値を取る
+    let params = request.params
+    echo params
     let 
-      offset = 0
-      limit = 10
-      sort = "creation_desc"
+      offset = if params.hasKey("offset"): params["offset"].parseInt else: 0
+      limit = if params.hasKey("limit"): params["limit"].parseInt else: 10
+      sort = if params.hasKey("sort"): params["sort"] else: "update_desc"
     {.gcsafe.}:
       let list = sv.getThreads(offset, limit, sort)
     resp %*{
