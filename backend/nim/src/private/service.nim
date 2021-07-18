@@ -6,6 +6,15 @@ type
   BBSService* = ref object
     repo:IBBSRepository
 
+type
+  BBSException* = ref object of CatchableError
+  InvalidErrorFields* = ref object
+    field*:string
+    message*:string
+  InvalidException* = ref object of BBSException
+    errors*:seq[InvalidErrorFields]
+  NotFoundException* = ref object of BBSException
+
 #[
   BBSServiceを作成
 ]#
@@ -24,7 +33,27 @@ proc getThreads*(self:BBSService,
 ]#
 proc createThread*(self:BBSService,
     title:string, body:string, authorName:string, tags:seq[string]):Thread =
-  # TODO バリデーション
+  # バリデーション
+  var invalid = newSeq[InvalidErrorFields]()
+  if title == "":
+    invalid.add(InvalidErrorFields(
+      field: "title",
+      message: "タイトルが指定されていません",
+    ))
+  if body == "":
+    invalid.add(InvalidErrorFields(
+      field: "body",
+      message: "内容が指定されていません",
+    ))
+  if authorName == "":
+    invalid.add(InvalidErrorFields(
+      field: "name",
+      message: "名前が指定されていません",
+    ))
+
+  if invalid.len > 0:
+    raise InvalidException(errors:invalid)
+
   result = self.repo.createThread(title, body, authorName, tags)
 
 #[
@@ -33,15 +62,32 @@ proc createThread*(self:BBSService,
 proc getThread*(self:BBSService,
     threadId:string):Thread =
   result = self.repo.getThread(threadId)
-  # TODO thread 存在チェック
+  if result == nil:
+    raise NotFoundException()
 
 #[
   Threadにコメントを追加
 ]#
 proc addComment*(self:BBSService,
     threadId:string, body:string, authorName:string, parentCommendId:int):Comment =
-  # TODO thread 存在チェック
-  # TODO バリデーション
+  if self.getThread(threadId) == nil:
+    raise NotFoundException()
+  # バリデーション
+  var invalid = newSeq[InvalidErrorFields]()
+  if body == "":
+    invalid.add(InvalidErrorFields(
+      field: "body",
+      message: "内容が指定されていません",
+    ))
+  if authorName == "":
+    invalid.add(InvalidErrorFields(
+      field: "name",
+      message: "名前が指定されていません",
+    ))
+
+  if invalid.len > 0:
+    raise InvalidException(errors:invalid)
+
   result = self.repo.addComment(threadId, body, authorName, parentCommendId)
 
 #[
@@ -49,5 +95,6 @@ proc addComment*(self:BBSService,
 ]#
 proc getThreadComments*(self:BBSService,
     threadId:string):seq[Comment] =
-  # TODO thread 存在チェック
+  if self.getThread(threadId) == nil:
+    raise NotFoundException()
   result = self.repo.getThreadComments(threadId)

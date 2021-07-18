@@ -16,7 +16,7 @@ type
     title*:string
     tags*:seq[string]
     updateTime*:BBSDateTime
-  ThreadList* = object
+  ThreadList* = ref object
     threadsCount*:int
     start*:int
     count*:int
